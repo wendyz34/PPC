@@ -117,16 +117,19 @@ public class ProductionPossibilityCurve extends JPanel{
         }
 
         JOptionPane.showMessageDialog(this, "Clicked point: (" + x + ", " + y + ") " + message);
-    
+
     }
 
 
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(g);
+
+        Color gray = new Color(175,175,175);
+        g.setColor(gray);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
 
         int width = getWidth();
         int height = getHeight();
@@ -134,7 +137,7 @@ public class ProductionPossibilityCurve extends JPanel{
         int yCenter = height / 2;
 
         // Draw the vertical line
-        g.setColor(Color.GRAY);
+        g.setColor(Color.BLACK);
         g.drawLine(xCenter, 0, xCenter, height / 2);
 
         // Draw the horizontal line
@@ -146,7 +149,8 @@ public class ProductionPossibilityCurve extends JPanel{
         g.drawString(yAxisLabel, xCenter + 10, 20);
 
         // Plot the user-provided points
-        g.setColor(Color.RED);
+        Color red = new Color(189,34,34);
+        g.setColor(red);
         for (Point point : points) {
             int x = xCenter + point.x;
             int y = yCenter - point.y;
@@ -154,7 +158,8 @@ public class ProductionPossibilityCurve extends JPanel{
         }
 
         // Draw the arc
-        g.setColor(Color.BLUE);
+        Color blue = new Color(85,122,171);
+        g.setColor(blue);
         int arcStartX = xCenter - cap;
         int arcStartY = yCenter - con;
         int arcWidth = cap * 2;
@@ -167,7 +172,7 @@ public class ProductionPossibilityCurve extends JPanel{
     public static void main(String[] args) {
         JFrame frame = new JFrame("Production Possibility Curve");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(550,550);
+        frame.setSize(400,400);
         Scanner scanner = new Scanner(System.in);
         //Label axis
         //coordinates only show within 250?
