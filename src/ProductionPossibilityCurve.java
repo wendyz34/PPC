@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 
 public class ProductionPossibilityCurve extends JPanel{
 
-    private List<Point> points;
+    private ArrayList<Point> points;
     private String xAxisLabel;
     private String yAxisLabel;
     private static int con;
@@ -145,8 +145,8 @@ public class ProductionPossibilityCurve extends JPanel{
 
         // Draw the x and y axis labels
         g.setColor(Color.BLACK);
-        g.drawString(xAxisLabel, width - 70, height / 2 - 10);
-        g.drawString(yAxisLabel, xCenter + 10, 20);
+        g.drawString(xAxisLabel, width - 150, height / 2 + 30);
+        g.drawString(yAxisLabel, xCenter -160, 50);
 
         // Plot the user-provided points
         Color red = new Color(189,34,34);
