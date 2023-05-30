@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.awt.event.MouseEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class ProductionPossibilityCurve extends JPanel{
 
@@ -17,12 +18,36 @@ public class ProductionPossibilityCurve extends JPanel{
 
     private JLabel coordinatesLabel;
 
+    private JSpinner maxCon;
+    private JSpinner maxCap;
+
+    private JButton addCoor;
+
     public ProductionPossibilityCurve(String xAxisLabel, String yAxisLabel) {
         points = new ArrayList<>();
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
         coordinatesLabel = new JLabel("");
         add(coordinatesLabel);
+        //button
+        addCoor = new JButton("Add coordinates");
+        addCoor.setBounds(10, 130,150, 40);
+        add(addCoor);
+        //Spinners
+        SpinnerNumberModel maxC = new SpinnerNumberModel(con,0,250,1);
+        maxCon = new JSpinner(maxC);
+        maxC.setValue(con);
+        con =(int)maxC.getValue();
+        // x smaller go left y bigger go down?
+        maxCon.setBounds(10,200,150,40);
+        SpinnerNumberModel maxCa = new SpinnerNumberModel(cap,0,250,1);
+        maxCap = new JSpinner(maxCa);
+        maxCap.setBounds(10,270,150,40);
+        maxCap.setValue(cap);
+        cap =(int)maxCa.getValue();
+        add(maxCon);
+        add(maxCap);
+        setVisible(true);
         // Set the layout manager for the panel
         setLayout(new BorderLayout());
         //Click Points
@@ -39,6 +64,7 @@ public class ProductionPossibilityCurve extends JPanel{
         // Initialize the coordinates label
         coordinatesLabel = new JLabel("");
         add(coordinatesLabel, BorderLayout.SOUTH);
+        //drag points
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -75,6 +101,21 @@ public class ProductionPossibilityCurve extends JPanel{
     public void addPoint(int x, int y) {
         points.add(new Point(x, y));
     }
+    /*public void JSpinner(){
+        SpinnerNumberModel maxC = new SpinnerNumberModel(con,0,250,1);
+        maxCon = new JSpinner(maxC);
+        con =(int)maxC.getValue();
+        // x smaller go left y bigger go down?
+        maxCon.setBounds(10,200,150,40);
+        SpinnerNumberModel maxCa = new SpinnerNumberModel(cap,0,250,1);
+        maxCap = new JSpinner(maxC);
+        // x smaller go left y bigger go down?
+        maxCap.setBounds(10,270,150,40);
+        con =(int)maxC.getValue();
+        add(maxCon);
+        add(maxCap);
+        setVisible(true);
+    }*/
     private Point getClickedPoint(int x, int y) {
         int width = getWidth();
         int height = getHeight();
@@ -94,6 +135,7 @@ public class ProductionPossibilityCurve extends JPanel{
     }
 
 
+
     private void handlePointClick(Point clickedPoint) {
         int x = clickedPoint.x;
         int y = clickedPoint.y;
@@ -107,10 +149,10 @@ public class ProductionPossibilityCurve extends JPanel{
                 (y - yCenter) * (y - yCenter) > radius * radius) {
             message = "Below the curve, might be in a recession";
         }else if ((x - xCenter) * (x - xCenter) +
-                (y - yCenter) * (y - yCenter) < radius * radius){
-            message = "Above the curve, technological advancement";
+                (y - yCenter) * (y - yCenter) == radius * radius){
+            message = "On the curve, normal production" ;
         }else{
-            message = "On the curve, normal production";
+            message = "Above the curve, technological advancement";
         }
         if((x==cap)&&(y==0)||(y==con)&&(x==0)){
             message = "On the curve, normal production";
@@ -129,6 +171,10 @@ public class ProductionPossibilityCurve extends JPanel{
         Color gray = new Color(175,175,175);
         g.setColor(gray);
         g.fillRect(0, 0, getWidth(), getHeight());
+
+        //label jspinner
+        g.drawString("Change maxY",20,150);
+        g.drawString("Change maxX",20,150);
 
 
         int width = getWidth();
@@ -167,6 +213,31 @@ public class ProductionPossibilityCurve extends JPanel{
 
         g.drawArc(arcStartX, arcStartY, arcWidth, arcHeight, 0, 90);
     }
+  /*  public void setAddCoor(){
+        //get coordinates
+         ProductionPossibilityCurve graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
+        while (true) {
+
+            String input = JOptionPane.showInputDialog("Enter coordinates (x, y) separated by spaces (or press enter to finish): ");
+            if (input.isEmpty()) {
+                break;
+            }
+
+            String[] parts = input.split(" ");
+            if (parts.length != 2) {
+                System.out.println("Invalid input! Please enter coordinates in the format 'x y'.");
+                continue;
+            }
+            try {
+                int x = Integer.parseInt(parts[0]);
+                int y = Integer.parseInt(parts[1]);
+                graphPanel.addPoint(x, y);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter integers for the coordinates.");
+                continue;
+            }
+        }
+    }*/
 
 
     public static void main(String[] args) {
@@ -186,9 +257,7 @@ public class ProductionPossibilityCurve extends JPanel{
         String s = JOptionPane.showInputDialog("Max production of consumer goods?");
         cap = Integer.parseInt(s);
         //get coordinates
-        while (true) {
-            /*System.out.println("Enter coordinates (x, y) separated by spaces (or press enter to finish): ");
-            String input = scanner.nextLine();*/
+         while (true) {
             String input = JOptionPane.showInputDialog("Enter coordinates (x, y) separated by spaces (or press enter to finish): ");
             if (input.isEmpty()) {
                 break;
