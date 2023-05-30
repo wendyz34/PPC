@@ -16,6 +16,7 @@ public class ProductionPossibilityCurve extends JPanel{
     private Point dragPoint;
 
     private JLabel coordinatesLabel;
+    private JButton max;
 
     public ProductionPossibilityCurve(String xAxisLabel, String yAxisLabel) {
         points = new ArrayList<>();
@@ -23,6 +24,8 @@ public class ProductionPossibilityCurve extends JPanel{
         this.yAxisLabel = yAxisLabel;
         coordinatesLabel = new JLabel("");
         add(coordinatesLabel);
+        /*max = new JButton("Change production");
+        add(max, 20,30);*/
         // Set the layout manager for the panel
         setLayout(new BorderLayout());
         //Click Points
@@ -107,14 +110,12 @@ public class ProductionPossibilityCurve extends JPanel{
                 (y - yCenter) * (y - yCenter) > radius * radius) {
             message = "Below the curve, might be in a recession";
         }else if ((x - xCenter) * (x - xCenter) +
-                (y - yCenter) * (y - yCenter) < radius * radius){
-            message = "Above the curve, technological advancement";
+                (y - yCenter) * (y - yCenter) == radius * radius){
+            message = "On the curve, normal production";
         }else{
-            message = "On the curve, normal production";
+            message = "Above the curve, technological advancement";
         }
-        if((x==cap)&&(y==0)||(y==con)&&(x==0)){
-            message = "On the curve, normal production";
-        }
+
 
         JOptionPane.showMessageDialog(this, "Clicked point: (" + x + ", " + y + ") " + message);
 
@@ -158,7 +159,7 @@ public class ProductionPossibilityCurve extends JPanel{
         }
 
         // Draw the arc
-        Color blue = new Color(85,122,171);
+        Color blue = new Color(40,109,188);
         g.setColor(blue);
         int arcStartX = xCenter - cap;
         int arcStartY = yCenter - con;
