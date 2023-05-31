@@ -28,8 +28,11 @@ public class ProductionPossibilityCurve extends JPanel {
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
 
+
+        // Create the coordinates label and add it to the south of the panel
         coordinatesLabel = new JLabel("");
-        add(coordinatesLabel);
+        add(coordinatesLabel, BorderLayout.SOUTH);
+
 
         // Button
         addCoor = new JButton("Add coordinates");
@@ -85,7 +88,9 @@ public class ProductionPossibilityCurve extends JPanel {
                 dragPoint = null;
             }
         });
-
+        // Initialize the coordinates label
+        coordinatesLabel = new JLabel("");
+        add(coordinatesLabel, BorderLayout.SOUTH);
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -94,14 +99,11 @@ public class ProductionPossibilityCurve extends JPanel {
                     int height = getHeight();
                     int xCenter = width / 2;
                     int yCenter = height / 2;
-
                     dragPoint.x = e.getX() - xCenter;
                     dragPoint.y = yCenter - e.getY();
-
                     // Update the coordinates label
                     coordinatesLabel.setText("Coordinates: (" + dragPoint.x + ", " + dragPoint.y + ")");
-
-                    // Call repaint to update the component
+                    //Calls paintComponent so the coordinates update and reflect.
                     repaint();
                 }
             }
@@ -109,7 +111,8 @@ public class ProductionPossibilityCurve extends JPanel {
     }
 
 
-    //Adds points to list
+
+        //Adds points to list
     public void addPoint(int x, int y) {
         points.add(new Point(x, y));
     }
