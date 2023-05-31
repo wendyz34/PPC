@@ -22,12 +22,13 @@ public class ProductionPossibilityCurve extends JPanel {
     private JSpinner maxCap;
 
     private JButton addCoor;
-
+    private static ProductionPossibilityCurve graphPanel;
     public ProductionPossibilityCurve(String xAxisLabel, String yAxisLabel) {
         points = new ArrayList<>();
+        Point orgin = new Point(0,0);
+        points.add(orgin);
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
-
 
         // Create the coordinates label and add it to the south of the panel
         coordinatesLabel = new JLabel("");
@@ -68,6 +69,20 @@ public class ProductionPossibilityCurve extends JPanel {
         // Set the layout manager for the panel
         setLayout(new BorderLayout());
 
+        //Add coordinates
+        addCoor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(addCoor.isEnabled()){
+                    setAddCoor();
+                    setVisible(true);
+                    repaint();
+
+                }
+
+            }
+        });
+
         // Click Points
         addMouseListener(new MouseAdapter() {
             @Override
@@ -103,7 +118,6 @@ public class ProductionPossibilityCurve extends JPanel {
                     dragPoint.y = yCenter - e.getY();
                     // Update the coordinates label
                     coordinatesLabel.setText("Coordinates: (" + dragPoint.x + ", " + dragPoint.y + ")");
-                    //Calls paintComponent so the coordinates update and reflect.
                     repaint();
                 }
             }
@@ -112,7 +126,7 @@ public class ProductionPossibilityCurve extends JPanel {
 
 
 
-        //Adds points to list
+    //Adds points to list
     public void addPoint(int x, int y) {
         points.add(new Point(x, y));
     }
@@ -141,15 +155,17 @@ public class ProductionPossibilityCurve extends JPanel {
         int xCenter = width / 2;
         int yCenter = height / 2;
         double radius = Math.sqrt(x*x+y*y);
+        //should be between 0 and 90 doesn't work probably
+        double angle = Math.atan2(y-yCenter, x-xCenter);
         String message = "";
-        if ((x - xCenter) * (x - xCenter) +
-                (y - yCenter) * (y - yCenter) > radius * radius) {
+        if (((x - xCenter) * (x - xCenter) +
+                (y - yCenter) * (y - yCenter) > radius * radius)) {
             message = "Below the curve, might be in a recession";
-        }else if ((x - xCenter) * (x - xCenter) +
-                (y - yCenter) * (y - yCenter) == radius * radius){
-            message = "On the curve, normal production" ;
+        }else if (((x - xCenter) * (x - xCenter) +
+                (y - yCenter) * (y - yCenter) < radius * radius) ){
+            message = "Above the curve, technological advancement" ;
         }else{
-            message = "Above the curve, technological advancement";
+            message = "On the curve, normal production";
         }
         if((x==cap)&&(y==0)||(y==con)&&(x==0)){
             message = "On the curve, normal production";
@@ -168,10 +184,6 @@ public class ProductionPossibilityCurve extends JPanel {
         g.setColor(gray);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        //label jspinner
-        g.drawString("Change maxY",20,150);
-        g.drawString("Change maxX",20,150);
-
 
         int width = getWidth();
         int height = getHeight();
@@ -189,6 +201,10 @@ public class ProductionPossibilityCurve extends JPanel {
         g.setColor(Color.BLACK);
         g.drawString(xAxisLabel, width - 150, height / 2 + 30);
         g.drawString(yAxisLabel, xCenter -160, 50);
+
+        //Label JSpinner
+        g.drawString("Change maxX",xCenter -150, height / 2 + 85);
+        g.drawString("Change maxY",xCenter - 150,height / 2 + 10);
 
         // Plot the user-provided points
         Color red = new Color(189,34,34);
@@ -209,9 +225,9 @@ public class ProductionPossibilityCurve extends JPanel {
 
         g.drawArc(arcStartX, arcStartY, arcWidth, arcHeight, 0, 90);
     }
-  /*  public void setAddCoor(){
+    public void setAddCoor(){
         //get coordinates
-         ProductionPossibilityCurve graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
+        //ProductionPossibilityCurve graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
         while (true) {
 
             String input = JOptionPane.showInputDialog("Enter coordinates (x, y) separated by spaces (or press enter to finish): ");
@@ -233,7 +249,7 @@ public class ProductionPossibilityCurve extends JPanel {
                 continue;
             }
         }
-    }*/
+    }
 
 
     public static void main(String[] args) {
@@ -245,32 +261,12 @@ public class ProductionPossibilityCurve extends JPanel {
         //coordinates only show within 250?
         String xAxisLabel= JOptionPane.showInputDialog("Label x:");
         String yAxisLabel= JOptionPane.showInputDialog("Label y:");
-        ProductionPossibilityCurve graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
-        //get coordinates
-         while (true) {
-            String input = JOptionPane.showInputDialog("Enter coordinates (x, y) separated by spaces (or press enter to finish): ");
-            if (input.isEmpty()) {
-                break;
-            }
-
-            String[] parts = input.split(" ");
-            if (parts.length != 2) {
-                System.out.println("Invalid input! Please enter coordinates in the format 'x y'.");
-                continue;
-            }
-            try {
-                int x = Integer.parseInt(parts[0]);
-                int y = Integer.parseInt(parts[1]);
-                graphPanel.addPoint(x, y);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input! Please enter integers for the coordinates.");
-                continue;
-            }
-        }
+        // ProductionPossibilityCurve graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
+        graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
 
         frame.add(graphPanel);
 
         frame.setVisible(true);
-        //scanner.close();
+
     }
 }
