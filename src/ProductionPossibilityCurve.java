@@ -130,9 +130,6 @@ public class ProductionPossibilityCurve extends JPanel {
 
         return null;
     }
-
-
-
     private void handlePointClick(Point clickedPoint) {
         int x = clickedPoint.x;
         int y = clickedPoint.y;
@@ -158,7 +155,6 @@ public class ProductionPossibilityCurve extends JPanel {
         JOptionPane.showMessageDialog(this, "Clicked point: (" + x + ", " + y + ") " + message);
 
     }
-
 
 
     @Override
