@@ -112,7 +112,7 @@ public class ProductionPossibilityCurve extends JPanel {
 
 
 
-    //Adds points to list
+        //Adds points to list
     public void addPoint(int x, int y) {
         points.add(new Point(x, y));
     }
@@ -247,7 +247,7 @@ public class ProductionPossibilityCurve extends JPanel {
         String yAxisLabel= JOptionPane.showInputDialog("Label y:");
         ProductionPossibilityCurve graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
         //get coordinates
-        while (true) {
+         while (true) {
             String input = JOptionPane.showInputDialog("Enter coordinates (x, y) separated by spaces (or press enter to finish): ");
             if (input.isEmpty()) {
                 break;
