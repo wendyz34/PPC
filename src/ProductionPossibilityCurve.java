@@ -15,9 +15,7 @@ public class ProductionPossibilityCurve extends JPanel {
     private static int con;
     private static int cap;
     private Point dragPoint;
-
     private JLabel coordinatesLabel;
-
     private JSpinner maxCon;
     private JSpinner maxCap;
 
@@ -25,8 +23,8 @@ public class ProductionPossibilityCurve extends JPanel {
     private static ProductionPossibilityCurve graphPanel;
     public ProductionPossibilityCurve(String xAxisLabel, String yAxisLabel) {
         points = new ArrayList<>();
-        Point orgin = new Point(0,0);
-        points.add(orgin);
+        Point origin = new Point(0,0);
+        points.add(origin);
         this.xAxisLabel = xAxisLabel;
         this.yAxisLabel = yAxisLabel;
 
@@ -34,14 +32,13 @@ public class ProductionPossibilityCurve extends JPanel {
         coordinatesLabel = new JLabel("");
         add(coordinatesLabel, BorderLayout.SOUTH);
 
-
         // Button
         addCoor = new JButton("Add coordinates");
         addCoor.setBounds(10, 130, 150, 40);
         add(addCoor);
 
         // Spinners
-        SpinnerNumberModel maxC = new SpinnerNumberModel(50, 0, 250, 1);
+        SpinnerNumberModel maxC = new SpinnerNumberModel(50, 0, 200, 1);
         maxCon = new JSpinner(maxC);
         con = (int) maxC.getValue();
         maxCon.setBounds(10, 200, 150, 40);
@@ -52,7 +49,7 @@ public class ProductionPossibilityCurve extends JPanel {
             }
         });
 
-        SpinnerNumberModel maxCa = new SpinnerNumberModel(50, 0, 250, 1);
+        SpinnerNumberModel maxCa = new SpinnerNumberModel(50, 0, 200, 1);
         maxCap = new JSpinner(maxCa);
         cap = (int) maxCa.getValue();
         maxCap.setBounds(10, 270, 150, 40);
@@ -147,6 +144,7 @@ public class ProductionPossibilityCurve extends JPanel {
 
         return null;
     }
+    //handle point click message
     private void handlePointClick(Point clickedPoint) {
         int x = clickedPoint.x;
         int y = clickedPoint.y;
@@ -156,7 +154,7 @@ public class ProductionPossibilityCurve extends JPanel {
         int yCenter = height / 2;
         double radius = Math.sqrt(x*x+y*y);
         //should be between 0 and 90 doesn't work probably
-        double angle = Math.atan2(y-yCenter, x-xCenter);
+        //double angle = Math.atan2(y-yCenter, x-xCenter);
         String message = "";
         if (((x - xCenter) * (x - xCenter) +
                 (y - yCenter) * (y - yCenter) > radius * radius)) {
@@ -222,7 +220,6 @@ public class ProductionPossibilityCurve extends JPanel {
         int arcStartY = yCenter - con;
         int arcWidth = cap * 2;
         int arcHeight = con * 2;
-
         g.drawArc(arcStartX, arcStartY, arcWidth, arcHeight, 0, 90);
     }
     public void setAddCoor(){
@@ -256,16 +253,12 @@ public class ProductionPossibilityCurve extends JPanel {
         JFrame frame = new JFrame("Production Possibility Curve");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400,400);
-        Scanner scanner = new Scanner(System.in);
         //Label axis
-        //coordinates only show within 250?
         String xAxisLabel= JOptionPane.showInputDialog("Label x:");
         String yAxisLabel= JOptionPane.showInputDialog("Label y:");
-        // ProductionPossibilityCurve graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
         graphPanel = new ProductionPossibilityCurve(xAxisLabel, yAxisLabel);
-
+        //add panel to frame
         frame.add(graphPanel);
-
         frame.setVisible(true);
 
     }
